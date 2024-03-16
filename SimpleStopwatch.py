@@ -12,6 +12,7 @@ class App(tk.Frame):
         self.activities = []
         self.running = False
         self.start_time = 0
+        self.time_on_clock = 0
 
         self.activity_entry = tk.Entry(self)
         self.activity_entry.pack()
@@ -36,6 +37,9 @@ class App(tk.Frame):
         self.start_stopwatch_button = tk.Button(self.stopwatch_container, text="Start", command=self.toggle_stopwatch)
         self.start_stopwatch_button.pack()
 
+        self.reset_stopwatch_button = tk.Button(self.stopwatch_container, text="Reset", command=self.reset_stopwatch)
+        self.reset_stopwatch_button.pack()
+
     def toggle_stopwatch(self):
         if not self.running:
             self.start_time = time.time()
@@ -46,9 +50,17 @@ class App(tk.Frame):
             self.running = False
             self.start_stopwatch_button.config(text="Start")
 
+    def reset_stopwatch(self):
+        self.running = True
+        self.start_time = time.time()
+        self.update_clock()
+        self.running = False
+
     def update_clock(self):
         if self.running:
-            elapsed_time = time.time() - self.start_time
+            time_now = time.time()
+            elapsed_time = time_now - self.start_time
+            self.time_on_clock = time_now
             self.time_label.config(text=self.format_time(elapsed_time))
             self.after(50, self.update_clock)
 
@@ -60,15 +72,15 @@ class App(tk.Frame):
         return f"{minutes}:{seconds:02}:{milliseconds:03}"
 
     def record_activity(self, event):
-        current_time = time.time()
+        current_time = self.time_on_clock
         activity_name = self.contents.get()
 
+        since_start = current_time - self.start_time
+
         if self.activities:
-            since_start = current_time - self.start_time
             duration = current_time - self.activities[-1][1]
         else:
-            since_start = 0
-            duration = 0
+            duration = current_time - self.start_time
 
         self.activities.append((activity_name, current_time))
         self.tree.insert('', 'end', values=(activity_name, f"{since_start:.2f}", f"{duration:.2f}"))
