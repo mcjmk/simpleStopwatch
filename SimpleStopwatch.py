@@ -22,13 +22,15 @@ class App(tk.Frame):
         self.activity_entry["textvariable"] = self.contents
         self.activity_entry.bind('<Key-Return>', self.record_activity)
 
-        self.tree = ttk.Treeview(self, columns=('Activity', 'Since Start', 'Duration'), show='headings')
+        self.tree = ttk.Treeview(self, columns=('Activity', 'Since Start', 'Duration'), show='headings', height=40)
         self.tree.heading('Activity', text='Activity')
         self.tree.heading('Since Start', text='Since Start (s)')
         self.tree.heading('Duration', text='Duration (s)')
         self.tree.pack()
+
         self.tree_scroll = tk.Scrollbar(self, orient="vertical", command=self.tree.yview)
         self.tree_scroll.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=self.tree_scroll.set)
 
         self.stopwatch_container = tk.Frame(self)
         self.stopwatch_container.pack(side='right', fill='y')
