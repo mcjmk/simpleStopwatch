@@ -22,7 +22,7 @@ class App(tk.Frame):
         self.activity_entry["textvariable"] = self.contents
         self.activity_entry.bind('<Key-Return>', self.record_activity)
 
-        self.tree = ttk.Treeview(self, columns=('Activity', 'Since Start', 'Duration'), show='headings', height=40)
+        self.tree = ttk.Treeview(self, columns=('Activity', 'Since Start', 'Duration'), show='headings', height=20)
         self.tree.heading('Activity', text='Activity')
         self.tree.heading('Since Start', text='Since Start (s)')
         self.tree.heading('Duration', text='Duration (s)')
