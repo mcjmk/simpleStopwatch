@@ -27,16 +27,15 @@ class App(tk.Frame):
         self.tree.heading('Since Start', text='Since Start (s)')
         self.tree.heading('Duration', text='Duration (s)')
         self.tree.pack()
+        self.tree_scroll = tk.Scrollbar(self, orient="vertical", command=self.tree.yview)
+        self.tree_scroll.pack(side='right', fill='y')
 
         self.stopwatch_container = tk.Frame(self)
         self.stopwatch_container.pack(side='right', fill='y')
-
         self.time_label = tk.Label(self.stopwatch_container, text="0:00:000", font=("Helvetica", 24))
         self.time_label.pack()
-
         self.start_stopwatch_button = tk.Button(self.stopwatch_container, text="Start", command=self.toggle_stopwatch)
         self.start_stopwatch_button.pack()
-
         self.reset_stopwatch_button = tk.Button(self.stopwatch_container, text="Reset", command=self.reset_stopwatch)
         self.reset_stopwatch_button.pack()
 
@@ -74,9 +73,7 @@ class App(tk.Frame):
     def record_activity(self, event):
         current_time = self.time_on_clock
         activity_name = self.contents.get()
-
         since_start = current_time - self.start_time
-
         if self.activities:
             duration = current_time - self.activities[-1][1]
         else:
